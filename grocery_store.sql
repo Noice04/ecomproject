@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2025 at 07:32 AM
+-- Generation Time: Apr 24, 2025 at 08:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -161,7 +161,15 @@ CREATE TABLE `wishlistitem` (
 -- Indexes for table `cart`
 --
 ALTER TABLE `cart`
-  ADD PRIMARY KEY (`cart_id`);
+  ADD PRIMARY KEY (`cart_id`),
+  ADD KEY `fk_cart_user` (`user_id`);
+
+--
+-- Indexes for table `cartitem`
+--
+ALTER TABLE `cartitem`
+  ADD KEY `fk_cartitem_product` (`product_id`),
+  ADD KEY `fk_cartitem_cart` (`cart_id`);
 
 --
 -- Indexes for table `category`
@@ -173,31 +181,37 @@ ALTER TABLE `category`
 -- Indexes for table `order`
 --
 ALTER TABLE `order`
-  ADD PRIMARY KEY (`order_id`);
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `fk_order_user` (`user_id`);
 
 --
 -- Indexes for table `order_item`
 --
 ALTER TABLE `order_item`
-  ADD PRIMARY KEY (`order_item`);
+  ADD PRIMARY KEY (`order_item`),
+  ADD KEY `fk_orderitem_order` (`order_id`),
+  ADD KEY `fk_orderitem_product` (`product_id`);
 
 --
 -- Indexes for table `payment`
 --
 ALTER TABLE `payment`
-  ADD PRIMARY KEY (`payment_id`);
+  ADD PRIMARY KEY (`payment_id`),
+  ADD KEY `fk_payment_order` (`order_id`);
 
 --
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`product_id`);
+  ADD PRIMARY KEY (`product_id`),
+  ADD KEY `fk_product_category` (`category_id`);
 
 --
 -- Indexes for table `subscription`
 --
 ALTER TABLE `subscription`
-  ADD PRIMARY KEY (`subscription_id`);
+  ADD PRIMARY KEY (`subscription_id`),
+  ADD KEY `fk_subscription_user` (`user_id`);
 
 --
 -- Indexes for table `user`
@@ -209,7 +223,9 @@ ALTER TABLE `user`
 -- Indexes for table `wishlistitem`
 --
 ALTER TABLE `wishlistitem`
-  ADD PRIMARY KEY (`wishlist_item_id`);
+  ADD PRIMARY KEY (`wishlist_item_id`),
+  ADD KEY `fk_wishlistitem_user` (`user_id`),
+  ADD KEY `fk_wishlistitem_product` (`product_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -268,6 +284,61 @@ ALTER TABLE `user`
 --
 ALTER TABLE `wishlistitem`
   MODIFY `wishlist_item_id` int(25) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `fk_cart_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+
+--
+-- Constraints for table `cartitem`
+--
+ALTER TABLE `cartitem`
+  ADD CONSTRAINT `fk_cartitem_cart` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`),
+  ADD CONSTRAINT `fk_cartitem_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+
+--
+-- Constraints for table `order`
+--
+ALTER TABLE `order`
+  ADD CONSTRAINT `fk_order_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+
+--
+-- Constraints for table `order_item`
+--
+ALTER TABLE `order_item`
+  ADD CONSTRAINT `fk_orderitem_order` FOREIGN KEY (`order_id`) REFERENCES `order` (`order_id`),
+  ADD CONSTRAINT `fk_orderitem_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+
+--
+-- Constraints for table `payment`
+--
+ALTER TABLE `payment`
+  ADD CONSTRAINT `fk_payment_order` FOREIGN KEY (`order_id`) REFERENCES `order` (`order_id`);
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `fk_product_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
+
+--
+-- Constraints for table `subscription`
+--
+ALTER TABLE `subscription`
+  ADD CONSTRAINT `fk_subscription_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+
+--
+-- Constraints for table `wishlistitem`
+--
+ALTER TABLE `wishlistitem`
+  ADD CONSTRAINT `fk_wishlistitem_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
+  ADD CONSTRAINT `fk_wishlistitem_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
