@@ -5,10 +5,10 @@ class App{
 
     public function start(){
         
-        if (empty($_GET['url'])){
+        /*if (empty($_GET['url'])){
             echo "noice";
             //header('location:homes');        
-        }
+        }*/
 
         spl_autoload_register(function ($class) {
             require($class.'.php');
