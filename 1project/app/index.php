@@ -34,10 +34,15 @@ class App{
             //echo "URL = ".$_GET['url'];
             
             //this is a pretty roundabout way of redirecting the user to the home page if the url is empty
-            
+            //and it works well for keeping everything the way it was
             $urlParams = $request->getParams();
             if (empty($urlParams[0])){
+                if(isset($request->getpostFields()['page'])){
+                    $resourceName = $request->getpostFields()['page'];
+                }
+                else
                 $resourceName = "homes";
+                    
             }
             else{
             $resourceName = $urlParams[0];
@@ -52,6 +57,7 @@ class App{
             // 1- We need to Capitalize the first letter "E"
             // 2- We need to remove the "s"
             // 3- We need to append the keyword "Controller"
+            
 
             $controllerClass = substr(ucfirst($resourceName), 0, strlen($resourceName)-1)."Controller";
             

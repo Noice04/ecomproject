@@ -4,6 +4,7 @@ namespace views;
 
 class Homepage {
 
+
     
     public function render($data,$categories) {
         ?>
@@ -47,18 +48,49 @@ class Homepage {
                 .product_details:last-child {
                     border-bottom: none;
                 }
+                .products-row{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                }
+
             </style>
         </head>
         <body>
             <div class="container">
 
                 <h1>Welcome to Our Grocery Store</h1>
-                <button type="button" class="top-right-buttons" style="position:absolute;top: 20px; right: 140px;">Log in</button>
-                    <button type="button" class="top-right-buttons" style="position:absolute;top: 20px; right: 20px;">Sign up</button>
+
+                <?php 
+                session_start();
+                if (!isset($_SESSION['user_id'])): 
+                ?>
+                <form action="logins" method="GET">
+                    <?php  //changed the name to page so that within the index i may use this to find which page i should load next?>
+                <button type="submit" name="page" value="login" class="top-right-buttons" style="position:absolute;top: 20px; right: 140px;">Log in</button>
+                </form>
+
+                <form action="registers" method="GET">
+                <button type="submit" class="top-right-buttons" style="position:absolute;top: 20px; right: 20px;">Sign up</button>
+                </form>
+
+                <?php else: ?>
+                    
+                    <form action="/app/registers.php" method="POST">
+                <p style="position:absolute;top: 20px; right: 140px;"> Hello <?php echo $_SESSION['username'] ?> </p>
+                <button type="submit" name="page" value="Log out"class="top-right-buttons" style="position:absolute;top: 20px; right: 20px;">Log out</button>
+                </form>
+                
+                <?php endif ?>
+
+                    
 
                 
                 <?php if (!empty($data)): ?>
+                <div class="products-row">
                     <?php foreach ($data as $product): ?>
+
+                    
                         <div class="product">
                             <h2><?= htmlspecialchars($product['name']) ?></h2>
                             <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="Image" style="width:200px; height:150px;" />                   
@@ -70,8 +102,10 @@ class Homepage {
                                     </div>
                             
                  
-                    </div>
-                <?php endforeach; ?>
+                        </div>
+                    
+                    <?php endforeach; ?>
+                </div>
                 <?php else: ?>
                     <p>No products available in the store.<br>Our sincerest apologies</p>
                 <?php endif; ?>

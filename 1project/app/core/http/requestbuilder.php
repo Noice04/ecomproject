@@ -15,6 +15,7 @@ class RequestBuilder{
         $body = file_get_contents("php://input");        
         $postFields = $_POST;
         $params =  $this->getURLParams();
+        
 
         return new Request($method, $url, $headers, $body, $params, $postFields );
 
