@@ -3,14 +3,15 @@
 namespace models;
 
 use database\DBConnectionManager;
-use models\products;
+use models\Product;
 
-require(dirname(__DIR__)."/models/products.php");
+require(dirname(__DIR__)."/models/product.php");
 require_once(dirname(__DIR__)."/core/db/dbconnectionmanager.php");
 
 class Home{
 
     private $dbConnection;
+    
 
     // Constructor
     public function __construct() {
@@ -19,62 +20,22 @@ class Home{
 
     }
 
-    // Getters and setters
-    public function getID() {
-        return $this->id;
-    }
-
-    public function setID($id) {
-        $this->id = $id;
-    }  
-
-    public function getUsername() {
-        return $this->username;
-    }
-
-    public function setUsername($username) {
-        $this->username = $username;
-    }  
-
-    public function getEmail() {
-        return $this->email;
-    }
-
-    public function setEmail($email) {
-        $this->email = $email;
-    }
-
-    public function getPassword() {
-        return $this->password;
-    }
-
-    public function setPassword($password) {
-        $this->password = $password;
-    }  
-
-    public function getAddress() {
-        return $this->address;
-    }
-
-    public function setAddress($address) {
-        $this->address = $address;
-    }    
-    public function getRole() {
-        return $this->role;
-    }
-
-    public function setRole($role) {
-        $this->role = $role;
-    }  
+    
 
       
 
     // CRUD
-    public function read() {
+    public function getProducts() {
         $query = "SELECT * FROM products";
         $stmt = $this->dbConnection->prepare($query);
         $stmt->execute();
-        return $stmt->fetchAll(\PDO::FETCH_CLASS, Product::class);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    public function getCategories() {
+        $query = "SELECT * FROM category";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
     // Read single User by ID
     public function readOne() {

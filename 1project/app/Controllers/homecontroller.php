@@ -4,6 +4,7 @@
 
     use models\Home;
     use views\HomePage;
+    use models\Product;
 
     require(dirname(__DIR__)."/models/home.php");
     require(dirname(__DIR__)."/resources/views/public/homepage.php");
@@ -14,8 +15,11 @@
 
         public function read(){
             $home = new Home();
-            $data = $home->read();
-            (new HomePage())->render($data); 
+            $products = $home->getProducts();
+
+            $categories = $home->getCategories();
+            
+            (new HomePage())->render($products,$categories); 
         }
     }
 

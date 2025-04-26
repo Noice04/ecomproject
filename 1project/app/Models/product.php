@@ -14,6 +14,7 @@ class Product{
     private $price;
     private $stock;
     private $category_id;
+    private $image_url;
 
     private $dbConnection;
 
@@ -31,6 +32,13 @@ class Product{
 
     public function setID($id) {
         $this->id = $id;
+    }  
+    public function getImageUrl() {
+        return $this->$image_url;
+    }
+
+    public function setImageUrl($image_url) {
+        $this->image_url = $image_url;
     }  
 
     public function getName() {

@@ -32,10 +32,16 @@ class App{
             // Our objective is to read the "employees" and match it with a controller within our app
 
             //echo "URL = ".$_GET['url'];
-
+            
+            //this is a pretty roundabout way of redirecting the user to the home page if the url is empty
+            
             $urlParams = $request->getParams();
-
+            if (empty($urlParams[0])){
+                $resourceName = "homes";
+            }
+            else{
             $resourceName = $urlParams[0];
+            }
             //echo $resource;
 
             // We need to construct the controller name from the resource name

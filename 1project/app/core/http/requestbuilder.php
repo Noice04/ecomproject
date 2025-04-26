@@ -57,9 +57,11 @@ class RequestBuilder{
         // Since we may get a url of the form app/employees/1/ that finishes with a slash we need to use trim
         // to remove the last slash
         // Then we need to use explode to transform the value of $_GET['url'] into an array
-    
+        if(!empty($_GET['url']))
         return explode("/", trim($_GET['url'], "/") );
-    
+        else{
+            return [];
+        }
     }
 
 
