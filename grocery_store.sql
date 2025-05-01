@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2025 at 08:12 PM
+-- Generation Time: May 01, 2025 at 07:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -56,6 +56,13 @@ CREATE TABLE `category` (
   `category_id` int(25) NOT NULL,
   `name` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`category_id`, `name`) VALUES
+(2, 'bakery');
 
 -- --------------------------------------------------------
 
@@ -110,8 +117,18 @@ CREATE TABLE `products` (
   `description` varchar(40) NOT NULL,
   `price` decimal(20,0) NOT NULL,
   `stock` int(10) NOT NULL,
-  `category_id` int(10) NOT NULL
+  `category_id` int(10) NOT NULL,
+  `image_url` varchar(80) DEFAULT NULL,
+  `deal` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`product_id`, `name`, `description`, `price`, `stock`, `category_id`, `image_url`, `deal`) VALUES
+(1, 'Wheat Bread', 'Fresh bread made in store', 9, 7, 2, 'https://cdn.pixabay.com/photo/2019/05/06/14/24/bread-4183225_1280.jpg', 0),
+(2, 'Whole Bread', 'Its good for you', 10, 20, 2, 'https://cdn.pixabay.com/photo/2022/03/23/15/40/sliced-bread-7087438_1280.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -134,12 +151,19 @@ CREATE TABLE `subscription` (
 
 CREATE TABLE `user` (
   `user_id` int(25) NOT NULL,
-  `name` varchar(25) NOT NULL,
-  `email` int(25) NOT NULL,
-  `password` varchar(50) NOT NULL,
+  `username` varchar(25) NOT NULL,
+  `email` varchar(25) NOT NULL,
+  `password` varchar(70) NOT NULL,
   `address` varchar(40) NOT NULL,
   `is_admin` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`user_id`, `username`, `email`, `password`, `address`, `is_admin`) VALUES
+(11, 'asdf', 'asdf@asdf', '$2y$10$U/DmvfWu9.SIaRWuYseb6e/Sw51oFAzUoapScXygh3LBdoJGdUz.O', '', 0);
 
 -- --------------------------------------------------------
 
@@ -241,7 +265,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(25) NOT NULL AUTO_INCREMENT;
+  MODIFY `category_id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `order`
@@ -265,7 +289,7 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(25) NOT NULL AUTO_INCREMENT;
+  MODIFY `product_id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `subscription`
@@ -277,7 +301,7 @@ ALTER TABLE `subscription`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(25) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `wishlistitem`
