@@ -8,7 +8,7 @@ class LoginPage {
         ?>
         <!DOCTYPE html>
         <head>
-            <meta charset="UTF-8">
+            
             <style>
                 body {
                     font-family: Arial, sans-serif;
@@ -54,12 +54,24 @@ class LoginPage {
             </style>
         </head>
         <body>
+
             <div class="login-container">
                 <h2>Login</h2>
                 <form method="POST" action="">
                     <input type="text" name="username" placeholder="Username" required><br>
                     <input type="password" name="password" placeholder="Password" required><br>
-                    <button type="submit" name="page" value="home" >Log in</button>
+                    <table>
+                        <tr>
+                            <td>
+                                <button type="submit" name="page" value="home"style="width: 180px;" >Log in</button>
+                            </td>
+                            <td><a href="registers" style="font-size:13px;" >Don't have an <br>account?Register.</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="homes">Continue as guest</a></td>
+                        </tr>
+                    </table>
+                    
                 </form>
             </div>
         </body>

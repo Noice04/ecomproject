@@ -62,7 +62,20 @@ class RegisterPage {
                     <input type="text" name="username" placeholder="Username" required><br>
                     <input type="email" name="email" placeholder="Email" required><br>
                     <input type="password" name="password" placeholder="Password" required><br>
-                    <button type="submit">Register</button>
+                    <table>
+                        <tr>
+                            <td>
+                                <button type="submit"style="width: 180px;">Register</button>
+                            </td>
+                            <td>
+                                <a href="logins"style="font-size:15px;">Already have an <br>account?Log In</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a href="homes">Continue as guest</a></td>
+                        </tr>
+                    </table>
+                    
                 </form>
             </div>
         </body>
