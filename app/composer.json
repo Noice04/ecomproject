@@ -1,0 +1,8 @@
+{
+    "require": {
+      "monolog/monolog": "^3.0",
+        "symfony/dotenv": "^7.2",
+        "spomky-labs/otphp": "^11.3",
+        "mablae/gettext-bundle": "^0.2.8"
+    }
+  }
