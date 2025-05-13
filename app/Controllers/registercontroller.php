@@ -8,7 +8,7 @@ use views\RegisterPageSuccess;
 
 require(dirname(__DIR__)."/models/register.php");
 require(dirname(__DIR__)."/resources/views/public/registerpage.php");
-require(dirname(__DIR__)."/resources/views/public/registerpagesuccess.php");
+require(dirname(__DIR__)."/resources/views/2fa/registerpagesuccess.php");
 
 class RegisterController {
 

@@ -2,13 +2,15 @@
 
 namespace views;
 
-class LoginPage {
+class LoginPage2fa {
 
     public function render() {
         ?>
         <!DOCTYPE html>
+        <html>
         <head>
-            
+            <meta charset="UTF-8">
+            <title>2FA Verification</title>
             <style>
                 body {
                     font-family: Arial, sans-serif;
@@ -19,7 +21,7 @@ class LoginPage {
                     height: 100vh;
                     margin: 0;
                 }
-                .login-container {
+                .twofa-container {
                     background: white;
                     padding: 40px;
                     border-radius: 10px;
@@ -27,18 +29,17 @@ class LoginPage {
                     width: 300px;
                     text-align: center;
                 }
-                .login-container h2 {
+                .twofa-container h2 {
                     margin-bottom: 20px;
                 }
-                .login-container input[type="text"],
-                .login-container input[type="password"] {
+                .twofa-container input[type="text"] {
                     width: 100%;
                     padding: 10px;
-                    margin: 10px 0;
+                    margin: 10px 0 20px 0;
                     border: 1px solid #ccc;
                     border-radius: 5px;
                 }
-                .login-container button {
+                .twofa-container button {
                     width: 100%;
                     padding: 10px;
                     background-color: #4CAF50;
@@ -48,31 +49,24 @@ class LoginPage {
                     cursor: pointer;
                     font-size: 16px;
                 }
-                .login-container button:hover {
+                .twofa-container button:hover {
                     background-color: #45a049;
+                }
+                .info-text {
+                    font-size: 14px;
+                    color: #666;
+                    margin-bottom: 10px;
                 }
             </style>
         </head>
         <link rel="icon" href="icon1.ico" type="image/ico">
         <body>
-
-            <div class="login-container">
-                <h2>Login</h2>
+            <div class="twofa-container">
+                <h2>Two-Factor Authentication</h2>
+                <p class="info-text">Enter the 6-digit code from your Authenticator app</p>
                 <form method="POST" action="">
-                    <input type="text" name="username" placeholder="Username" required><br>
-                    <input type="password" name="password" placeholder="Password" required><br>
-                    <table>
-                        <tr>
-                            <td>
-                                <button type="submit" style="width: 180px;" >Log in</button>
-                            </td>
-                            <td><a href="registers" style="font-size:13px;" >Don't have an <br>account?Register.</a></td>
-                        </tr>
-                        <tr>
-                            <td><a href="homes">Continue as guest</a></td>
-                        </tr>
-                    </table>
-                    
+                    <input type="text" name="secret" placeholder="Enter 2FA Code" required>
+                    <button type="submit">Verify</button>
                 </form>
             </div>
         </body>

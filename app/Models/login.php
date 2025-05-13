@@ -16,29 +16,35 @@ class Login{
     
 
     // Constructor
-    public function __construct($data) {
+    public function __construct() {
 
         $this->dbConnection = (new DBConnectionManager())->getConnection();
-        $this->username= $data['username'];
-        $this->password= $data['password'];
          
     }
 
-    public function getId(){
-
+    public function getUserSecretbyID($userId){
+        $query = "SELECT twofa_secret FROM user WHERE user_id = :userid";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':userid',  $userId);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function login() {
-
+    public function login($data) {
+        echo "noice";
         $query = "SELECT * FROM user WHERE username = :username";
         $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':username', $this->username);
+        $stmt->bindParam(':username',  $data['username']);
         $stmt->execute();
         $datadb = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        
-        if(!empty($datadb)){
+        return $datadb;
+    }
+        //if(!empty($datadb)){
+
+          
+            /*
             //cant get the password_verify to work for some reason
-        if(password_verify($this->password,$datadb[0]['password'])){
+        if(password_verify($data['password'],$datadb[0]['password'])){
             session_start();
             $_SESSION['user_id'] = $datadb[0]['user_id'];
             $_SESSION['username'] = $datadb[0]['username'];
@@ -50,11 +56,11 @@ class Login{
            
 
             return false;
-        }
-    }
+        }*/
+    //}
 
-    return false;
+    //return false;
 
 
-    }
+    
 }
