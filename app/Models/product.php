@@ -104,6 +104,21 @@ class Product{
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function readByCategory($category){
+        $query = "SELECT * FROM products WHERE category_id = :categoryID";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':categoryID',$category);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    public function getCategoryName($category_id){
+        $query = "SELECT name FROM category WHERE category_id = :categoryID";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':categoryID',$category_id);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    
 
     // Read single User by ID
     public function readOne() {
@@ -131,12 +146,13 @@ class Product{
         return true;
     }
     //edits the user taking in any column and new value
-    public function editUser($column,$newvalue){
-        $query = "UPDATE user SET :column = :newvalue";
+    public function editUser($column,$newvalue,$userId){
+        $query = "UPDATE user SET :column = :newvalue WHERE user_id = :userID";
         $stmt = $this->dbConnection->prepare($query);
         //must implement a check for the values
         $stmt->bindParam(':column', $column);
         $stmt->bindParam(':newvalue', $newvalue);
+        $stmt->bindParam(':userID', $userId);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_CLASS, User::class);
     }

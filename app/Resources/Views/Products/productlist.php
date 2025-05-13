@@ -52,7 +52,7 @@ class ProductList {
                 .container {
                     width: 90%;
                     margin: 20px auto;
-                    padding-left: 400px;
+                    padding-left:250px;
                 }
                 .category {
                     margin-bottom: 30px;
@@ -161,7 +161,29 @@ class ProductList {
                     background-color: #f4f4f4;
                     padding: 20px;
                     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-                    z-index: 1000;       
+                    z-index: 1000;  
+                    margin-right:5px;   
+                }
+                .left-fixed-panel button {
+                    display: block;
+                    width: 100%;
+                    padding: 12px;
+                    margin-bottom: 12px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #333;
+                    background-color: #e7e7e7;
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                }
+
+                .left-fixed-panel button:hover {
+                    background-color: #157347;
+                    color: white;
+                    border-color: #145c37;
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
                 }
 
 
@@ -172,14 +194,16 @@ class ProductList {
             <div class="container">
                 <h1>Here are our products</h1>
                 <div class="left-fixed-panel">
-                    <a href="/1project/app/products/dairy">Dairy</a>
-                    <br>
-                    <a href="/1project/app/products/bakery">Baked Goods</a>
-                    <br>
-                    <a href="/1project/app/products/fruits">Fruits</a>
-                    <br>
-                    <a href="/1project/app/products/meat">Meats</a>
-                    <br>
+                    <form action="" method="POST">
+                        <button type="submit"name="selectedcategory"  value="1">Dairy</button>
+                        <br>
+                        <button type="submit"name="selectedcategory" value="2">Baked Goods</button>
+                        <br>
+                        <button type="submit"name="selectedcategory"  value="3">Fruits</button>
+                        <br>
+                        <button type="submit"name="selectedcategory"  value="4">Meats</button>
+                    </form>
+                    
                 </div>
 
                 <?php if (!empty($data)): ?>
@@ -187,8 +211,7 @@ class ProductList {
                          
                         
                         <div style="display:flex;justify-content: space-between;align-items: center;">
-                            <h2><?php echo $category['name']?></h2>
-                            <a href=<?php echo "categorys".$category['name'] ?>>View All</a>
+                            <h2><?php echo $category['name']?> products</h2>
                         </div>
                         <div class="scroll-container">
                             <div class="scroll-row" id=<?php echo $category['name']."row"?>>

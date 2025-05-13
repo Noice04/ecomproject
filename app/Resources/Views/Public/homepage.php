@@ -17,7 +17,17 @@ class Homepage {
         <head>
             <?php //non necessary currently?>
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+            <script>
+                const isLoggedIn = <?= !isset($_SESSION['user_id']) ? 'true' : 'false' ?>;
+                function addToCart(productId){
+                    if (isLoggedIn) {
+                        window.location.href = "logins";
+                        return;
+                    }
+                    console.log("noice");
+                }
 
+            </script>
             <style>
                 body {
                     font-family: Arial, sans-serif;
@@ -230,7 +240,7 @@ class Homepage {
                                                 <br>
                                                 <span>$<?= number_format($product['price'], 2) ?></span>
                                                 <br>
-                                                <button class="add-to-cart">Add To Cart</button>
+                                                <button class="add-to-cart" onclick="addToCart('${product.product_id}')">Add To Cart</button>
                                             </div>
                                         
                                         </div>
