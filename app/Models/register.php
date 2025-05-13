@@ -4,7 +4,9 @@ namespace models;
 
 use database\DBConnectionManager;
 use models\User;
+use OTPHP\TOTP;
 
+require 'vendor/autoload.php';
 require(dirname(__DIR__)."/models/user.php");
 require_once(dirname(__DIR__)."/core/db/dbconnectionmanager.php");
 
@@ -39,22 +41,27 @@ class Register {
         }
 
         // Insert new user
-        $query = "INSERT INTO user (username, email, password) VALUES (:username, :email, :password)";
+        $query = "INSERT INTO user (username, email, password,twofa_secret) VALUES (:username, :email, :password,:secret)";
         $stmt = $this->dbConnection->prepare($query);
         
+        $totp = TOTP::create();
+        $totp->setLabel($this->username); // or username
+        $totp->setIssuer('MyApp'); // your app name
+        $twofaSecret = $totp->getSecret();
+
         $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
 
         $stmt->bindParam(':username', $this->username);
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':password', $hashedPassword);
-
+        $stmt->bindParam(':secret', $twofaSecret);
         $success = $stmt->execute();
 
         if ($success) {
             session_start();
             $_SESSION['user_id']= $this->dbConnection->lastInsertId();
             $_SESSION['username']= $this->username;
-
+            $_SESSION['new_2fa_secret'] = $twofaSecret;
             return [
                 'user_id' => $this->dbConnection->lastInsertId(),
                 'username' => $this->username

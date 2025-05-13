@@ -53,6 +53,7 @@ class LoginPage {
                 }
             </style>
         </head>
+        <link rel="icon" href="icon1.ico" type="image/ico">
         <body>
 
             <div class="login-container">

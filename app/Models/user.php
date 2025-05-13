@@ -119,9 +119,9 @@ class User{
 
     //create user
 
-    public function createUser($username,$email,$password,$address,$role){
+    public function createUser($username,$email,$password,$address,$role,$secret2fa){
         $passwordhashed = password_hash($password);
-        $query = "INSERT INTO user VALUES(:username, :email , :passwordhashed, :address, :role)";
+        $query = "INSERT INTO user VALUES(:username, :email , :passwordhashed, :address, :role,:secret)";
         $stmt = $this->dbConnection->prepare($query);
         //must implement a check for the values
         $stmt->bindParam(':username', $username);
@@ -129,6 +129,7 @@ class User{
         $stmt->bindParam(':passwordhashed', $passwordhashed);
         $stmt->bindParam(':address', $address);
         $stmt->bindParam(':role', $role);
+        $stmt->bindParam(':secret', $secret2fa);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_CLASS, User::class);
     } 

@@ -97,7 +97,7 @@ class Homepage {
                 }
                 .allbutheaderandfooter{
                     font-family: Arial, sans-serif;
-                    margin: 0;
+                    margin-top: 25px;
                     padding: 40px;
                     justify-content: center;
                     align-items: center;
@@ -161,7 +161,35 @@ class Homepage {
                     transition: background-color 0.3s ease;
 
                 }
-                
+                .category-button {
+                    flex: 1 1 calc(25% - 10px); /* 4 items per row with spacing */
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 5px;
+                    padding: 15px;
+                    border: none;
+                    background-color: #f0f0f0;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+                    font-size: 16px;
+                    min-width: 100px;
+                }
+                .category-button:hover {
+                    background-color: #e0e0e0;
+                }
+                .category-button i {
+                    font-size: 24px;
+                }
+                .category-form {
+                    display: flex;
+                    justify-content: space-between; 
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    width: 100%;
+                }
 
             </style>
         </head>
@@ -174,8 +202,8 @@ class Homepage {
                     <div class="promo">
                         <div class="promo-text">
                         <h1>Fresh Groceries Delivered to Your Door</h1>
-                        <p>Shop the freshest produce, dairy, and pantry staples from the comfort of your home.</p>
-                        <button>Shop Now</button>
+                        <p>Shop the freshest produce, dairy, and pantry <br>staples from the comfort of your home.</p>
+                        <button onClick="window.location.href='products'">Shop Now</button>
                         </div>
                         <div class="promo-image">
                             <?php //using pixabay for their free pictures?>
@@ -185,35 +213,27 @@ class Homepage {
 
                     <h2>Shop by Category</h2>
 
-                    <div style="display: flex; gap: 10px;flex-wrap: wrap;" >
-                        
-                       
-                            <div  class="category-container"  onclick="window.location='fruits';">
-                                <i class="fa-solid fa-apple-whole"></i>
-                                <p>Fruits</p>
-                            </div>
-                       
-                        
-                        
-                            <div class="category-container"onclick="window.location='vegetables';">
-                            <i class="fa-solid fa-carrot"style="height:4px;"></i>
-                            <br>
-                            <p>Vegetables</p>
-                            </div>
-                        
-                        
-                            <div class="category-container"onclick="window.location='dairy';">
+                    <form action="products" method="POST" class="category-form">
+                        <button type="submit" name="selectedcategory" value="3" class="category-button">
+                            <i class="fa-solid fa-apple-whole"></i>
+                            <p>Fruits</p>
+                        </button>
+
+                        <button type="submit" name="selectedcategory" value="2" class="category-button">
+                            <i class="fas fa-bread-slice"></i>
+                            <p>Bakery</p>
+                        </button>
+
+                        <button type="submit" name="selectedcategory" value="1" class="category-button">
                             <i class="fa-solid fa-cheese"></i>
                             <p>Dairy</p>
-                            </div>
-                        
-                       
-                            <div class="category-container"onclick="window.location='meat';">
-                            <i class="fa-solid fa-bacon"style="height:4px;"></i>
+                        </button>
+
+                        <button type="submit" name="selectedcategory" value="4" class="category-button">
+                            <i class="fa-solid fa-bacon"></i>
                             <p>Meat</p>
-                            </div>
-                        
-                    </div>
+                        </button>
+                    </form>
                     
                     <div class="weeklydeals">
                         <div style="display:flex;justify-content: space-between;align-items: center;">

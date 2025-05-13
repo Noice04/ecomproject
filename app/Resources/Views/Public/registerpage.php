@@ -55,6 +55,7 @@ class RegisterPage {
                 }
             </style>
         </head>
+        <link rel="icon" href="icon1.ico" type="image/ico">
         <body>
             <div class="register-container">
                 <h2>Register</h2>

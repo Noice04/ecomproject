@@ -20,29 +20,51 @@
                 position:fixed;
                 top:0;
                 width: 100%;
+                max-height:40px;
+                margin-bottom:15px;
             }
             nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 20px;
-      margin-right:70px;
-      font-size: 16px;
-    }
-    .sign-up{
-        margin-right:40px;
-    }
-    
-    nav a:hover {
-      color: #00bfff;
-    }
+                color: white;
+                text-decoration: none;
+                margin-left: 20px;
+                margin-right:70px;
+                font-size: 16px;
+            }
+            .sign-up{
+                margin-right:40px;
+            }
+            
+            nav a:hover {
+                color: #00bfff;
+            }
 
-    .menu {
-      display: flex;
-      align-items: center;
-    }
+            .menu {
+                display: flex;
+                align-items: center;
+            }
+            .logout {
+                margin-right:40px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                justify-content: space-between; /* space between text and image */
+                padding: 10px;
+                border-radius: 5px;
+            }
+
+            .logout-content {
+                display: flex;
+                flex-direction: column;
+            }
+            .logout img {
+                width: 32px; /* optional: control size */
+                height: 32px;
+                object-fit: contain;
+            }
+
         </style>
     </head>
- 
+        <link rel="icon" href="icon1.ico" type="image/ico">
     <body>
         <header>
 
@@ -69,11 +91,13 @@
 
                     <?php else: ?>
                         
-                        <nav>
-                            <p>Hello <?php echo $_SESSION['username']?></p>
-                            <a href="logout">Log out</a>
+                        <nav class="logout">
+                            <div class="logout-content">
+                                <p style="margin: 5px 0;">Hello <?php echo $_SESSION['username'] ?></p>
+                                <a href="logouts">Log out</a>
+                            </div>
+                            <img src="icon1.ico" alt="cart" onClick="window.location.href = 'carts'">
                         </nav>
-
                         
                     
                     <?php endif ?>

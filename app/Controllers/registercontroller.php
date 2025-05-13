@@ -4,15 +4,18 @@ namespace controllers;
 
 use models\Register;
 use views\RegisterPage;
+use views\RegisterPageSuccess;
 
 require(dirname(__DIR__)."/models/register.php");
 require(dirname(__DIR__)."/resources/views/public/registerpage.php");
+require(dirname(__DIR__)."/resources/views/public/registerpagesuccess.php");
 
 class RegisterController {
 
     private Register $register;
 
     public function read() {
+        
         (new RegisterPage())->render();
     }
 
@@ -21,7 +24,7 @@ class RegisterController {
         $success = $register->register($data);
 
         if ($success) {
-            header('Location: logins'); // After successful registration, go to login page
+            (new RegisterPageSuccess())->render(); // After successful registration, go to login page
         } else {
             header('Location: registers'); // Stay on register page if failed
         }

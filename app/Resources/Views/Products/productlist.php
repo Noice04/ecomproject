@@ -35,6 +35,7 @@ class ProductList {
             </script>
 
         <head>
+             
             <title>Here are our products</title>
             <style>
                 body {
@@ -85,6 +86,7 @@ class ProductList {
                     gap: 15px;
                     padding: 15px;
                     width: 100%;
+                    padding-right:25px;
                 }
                 .scroll-item {
                     min-width: 150px;
