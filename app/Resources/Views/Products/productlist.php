@@ -32,8 +32,9 @@ class ProductList {
                     const formData = new FormData();
                     formData.append('product_id',productId);
                     formData.append('quantity',1);
+                    formData.append('action',"addToCart");
 
-                    //gotta add to cart without moving the user from the page so ajax
+                    //gotta add to cart without moving the user from the page so ajax for behind the scenes is perfect
                     fetch('carts', {
                         method: 'POST',
                         body: formData
@@ -41,7 +42,6 @@ class ProductList {
                     .then(response => response.text())
                     .then(data => {
                         alert('Product added to cart!');
-                        // You can also update a cart counter or UI dynamically here
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -49,9 +49,7 @@ class ProductList {
                 }
 
             </script>
-
         <head>
-             
             <title>Here are our products</title>
             <style>
                 body {

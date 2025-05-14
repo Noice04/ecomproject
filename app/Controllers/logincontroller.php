@@ -64,7 +64,7 @@ class LoginController{
 }
 
 /*
-//fucked
+//broken to be fixed
         if(isset($_SESSION['user_id'])){
             if(isset($data['secret'])){
                 var_dump($data);

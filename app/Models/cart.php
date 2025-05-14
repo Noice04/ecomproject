@@ -60,17 +60,35 @@ class Cart {
     }
 
     public function addToCart($user_id,$product_id,$quantity) {
-        $query = "INSERT INTO cart_items (user_id, product_id, quantity) VALUES (:user_id, :product_id, :quantity)
-                  ON DUPLICATE KEY UPDATE quantity = quantity + :quantity";
+        if ($this->cartItemExist($user_id,$product_id)){//if the item does already exist then we will add +1 to the quantity
+            $this->updateQuantity($user_id,$product_id, $quantity);
+        }
+        else{//if the item doesnt exist in the users cart then it will be added
+            $query = "INSERT INTO cart_items (user_id, product_id, quantity) VALUES (:user_id, :product_id, :quantity)";
+            $stmt = $this->dbConnection->prepare($query);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':product_id', $product_id);
+            $stmt->bindParam(':quantity', $quantity);
+            return $stmt->execute();
+        }
+    }
+    public function cartItemExist($user_id,$product_id){
+        $query = "SELECT * FROM cart_items WHERE user_id = :user_id AND product_id = :product_id";
         $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->bindParam(':product_id', $product_id);
-        $stmt->bindParam(':quantity', $quantity);
-        return $stmt->execute();
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':product_id', $product_id);
+            $stmt->execute();
+            $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            if(empty($data)){
+                return false;
+            }else{
+                return true;
+            }
     }
 
     public function getCartItems($user_id) {
         $query = "SELECT 
+            c.item_cart_id,
             c.product_id, 
             c.quantity, 
             p.name, 
@@ -87,11 +105,10 @@ class Cart {
         return $cartItems;
     }
 
-    public function removeItem($user_id, $product_id) {
-        $query = "DELETE FROM cart_items WHERE user_id = :user_id AND product_id = :product_id";
+    public function removeItem($itemId) {
+        $query = "DELETE FROM cart_items WHERE item_cart_id = :itemId";
         $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->bindParam(':product_id', $product_id);
+        $stmt->bindParam(':itemId', $itemId);
         return $stmt->execute();
     }
 
@@ -102,12 +119,11 @@ class Cart {
         return $stmt->execute();
     }
 
-    public function updateQuantity($user_id, $product_id, $quantity) {
-        $query = "UPDATE cart_items SET quantity = :quantity WHERE user_id = :user_id AND product_id = :product_id";
+    public function updateQuantity($item_cart_id, $quantity) {
+        $query = "UPDATE cart_items SET quantity = quantity + :quantity WHERE item_cart_id = :item_cart_id";
         $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':item_cart_id', $item_cart_id);
         $stmt->bindParam(':quantity', $quantity);
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->bindParam(':product_id', $product_id);
         return $stmt->execute();
     }
 }

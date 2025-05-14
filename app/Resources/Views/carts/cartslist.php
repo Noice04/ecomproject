@@ -6,12 +6,23 @@ class CartList {
 
     public function render($cartData) {
         require("Resources\\Views\\Public\\header.php");
+        if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+        }else if(!isset($_SESSION['user_id'])){
+            header("location:logins");
+        }
         
+
         $total = 0;
         ?>
         <!DOCTYPE html>
         <html>
+            <script>
+                
+            </script>
         <head>
+            
+
             <title>Your Cart</title>
             <style>
                 body {
@@ -60,6 +71,14 @@ class CartList {
                     border-radius: 5px;
                     cursor: pointer;
                 }
+                .plus-and-minusbtn {
+                    background-color: green;
+                    color: white;
+                    border: none;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
 
                 .remove-btn:hover {
                     background-color: darkred;
@@ -69,6 +88,21 @@ class CartList {
                     font-weight: bold;
                     background-color: #f9f9f9;
                 }
+                .confirm-btn {
+                    background-color: #4CAF50;
+                    color: white;
+                    padding: 16px 40px; 
+                    font-size: 18px;     
+                    border: none;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                }
+
+                .confirm-btn:hover {
+                    background-color: #45a049;
+                }
+
             </style>
         </head>
         <body>
@@ -94,14 +128,34 @@ class CartList {
                                 $total += $subtotal;
                             ?>
                             <tr>
-                                <td><?= htmlspecialchars($item['name']) ?></td>
+                                <td style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="<?= htmlspecialchars($item['image_url']) ?>" alt="<?= htmlspecialchars($item['name']) ?>" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
+                                    <span><?= htmlspecialchars($item['name']) ?></span>
+                                </td>
                                 <td>$<?= number_format($item['price'], 2) ?></td>
-                                <td><?= (int)$item['quantity'] ?></td>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <form  action="carts" method="POST">
+                                                <input type="hidden" name="item_cart_id" value=<?php echo $item['item_cart_id'] ?> >
+                                                <button <?php if($item['quantity']==1){echo 'disabled';} ?> type="submit" class="plus-and-minusbtn" name="action" value="reduceOne">-</button>
+                                            </form>
+
+                                            <?= (int)$item['quantity'] ?>
+
+                                            <form action="carts" method="POST">
+                                                <input type="hidden" name="item_cart_id" value=<?php echo $item['item_cart_id'] ?> >
+                                                <button type="submit" class="plus-and-minusbtn" name="action" value="increaseOne">+</button>
+                                            </form>
+                                        </tr>
+                                    </table>
+                                    
+                                </td>
                                 <td>$<?= number_format($subtotal, 2) ?></td>
                                 <td>
-                                    <form method="POST" action="">
-                                        <input type="hidden" name="remove_item" value="<?= htmlspecialchars($item['product_id']) ?>">
-                                        <button type="submit" class="remove-btn">Remove</button>
+                                    <form method="POST" action="carts">
+                                        <input type="hidden" name="item_cart_id" value=<?php echo $item['item_cart_id'] ?> >
+                                        <button type="submit" class="remove-btn" name="action" value="removeItem">Remove</button>
                                     </form>
                                 </td>
                             </tr>
@@ -112,6 +166,11 @@ class CartList {
                             </tr>
                         </tbody>
                     </table>
+                    <div style="text-align:center;margin-top:20px;">
+                        <form action="carts" method="POST">
+                            <button type="submit" name="action" value="confirmOrder" class="confirm-btn">Confirm Order</button>
+                        </form>
+                    </div>
                 <?php endif; ?>
             </div>
         </body>
