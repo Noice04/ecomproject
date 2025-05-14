@@ -61,6 +61,20 @@
                 height: 32px;
                 object-fit: contain;
             }
+            .button-link {
+                background: none;
+                color: white; 
+                border: none;
+                padding: 0;
+                font: inherit;
+                cursor: pointer;
+            }
+            .button-link:hover{
+                color: #00bfff;
+            }
+            .cart:hover{
+                cursor:pointer;
+            }
 
         </style>
     </head>
@@ -95,10 +109,12 @@
                         
                         <nav class="logout">
                             <div class="logout-content">
-                                <p style="margin: 5px 0;">Hello <?php echo $_SESSION['username'] ?></p>
-                                <a href="logouts">Log out</a>
+                                <form action="logins" method="POST">
+                                    <p style="margin: 5px 0;">Hello <?php echo $_SESSION['username'] ?></p>
+                                    <button type="submit" class="button-link" name="action" value="logout">Log Out</button>
+                                </form>
                             </div>
-                            <img src="icon1.ico" alt="cart" onClick="window.location.href = 'carts'">
+                            <img src="icon1.ico" alt="cart" onClick="window.location.href = 'carts'" class="cart">
                         </nav>
                         
                     

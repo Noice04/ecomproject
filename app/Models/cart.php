@@ -11,6 +11,7 @@ class Cart {
     private $cart_id;
     private $user_id;
     private $quantity;
+    private $item_cart_id;
     private $cartItems = [];
 
     private $dbConnection;
@@ -60,8 +61,9 @@ class Cart {
     }
 
     public function addToCart($user_id,$product_id,$quantity) {
-        if ($this->cartItemExist($user_id,$product_id)){//if the item does already exist then we will add +1 to the quantity
-            $this->updateQuantity($user_id,$product_id, $quantity);
+        $item_cart_id = $this->cartItemExist($user_id,$product_id);
+        if ($item_cart_id!=-1){//if the item does already exist then we will add +1 to the quantity
+            $this->updateQuantity($item_cart_id, 1);
         }
         else{//if the item doesnt exist in the users cart then it will be added
             $query = "INSERT INTO cart_items (user_id, product_id, quantity) VALUES (:user_id, :product_id, :quantity)";
@@ -72,17 +74,18 @@ class Cart {
             return $stmt->execute();
         }
     }
+    
     public function cartItemExist($user_id,$product_id){
-        $query = "SELECT * FROM cart_items WHERE user_id = :user_id AND product_id = :product_id";
+        $query = "SELECT item_cart_id FROM cart_items WHERE user_id = :user_id AND product_id = :product_id";
         $stmt = $this->dbConnection->prepare($query);
             $stmt->bindParam(':user_id', $user_id);
             $stmt->bindParam(':product_id', $product_id);
             $stmt->execute();
             $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             if(empty($data)){
-                return false;
+                return -1;
             }else{
-                return true;
+                return $data[0]['item_cart_id'];
             }
     }
 

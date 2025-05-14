@@ -48,6 +48,10 @@
                     $cart->removeItem($data['item_cart_id']);
                     $this->read();
                     break;
+                case "confirmOrder":
+                    $cart->removeItem($data['item_cart_id']);
+                    $this->read();
+                    break;
                 default: //perfect spot for a 404 not found error and then sending the user back to the home page
             }
             

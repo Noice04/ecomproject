@@ -33,8 +33,14 @@ class LoginController{
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        //this checks if the user inputed the correct password
+        if(isset($data['action'])){
+            if($data['action']=='logout'){
+                session_unset();
+                header("location:homes");
+            }
+        }
 
+//this checks if the user inputed the correct password
         if (!isset($data['secret'])){
             $datadb = $login->login($data);//gets the db password 
             if(password_verify($data['password'],$datadb[0]['password'])){ 

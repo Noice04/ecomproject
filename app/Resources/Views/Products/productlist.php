@@ -211,13 +211,12 @@ class ProductList {
                 <h1>Here are our products</h1>
                 <div class="left-fixed-panel">
                     <form action="" method="POST">
-                        <button type="submit"name="selectedcategory"  value="1">Dairy</button>
-                        <br>
-                        <button type="submit"name="selectedcategory" value="2">Baked Goods</button>
-                        <br>
-                        <button type="submit"name="selectedcategory"  value="3">Fruits</button>
-                        <br>
-                        <button type="submit"name="selectedcategory"  value="4">Meats</button>
+                        <?php if (!empty($data)): ?>
+                            <?php foreach($categories as $category):?>
+                                <button type="submit"name="selectedcategory"  value=<?php echo $category['category_id']; ?>><?php echo $category['name']; ?></button>
+                                <br>
+                            <?php endforeach ?>
+                        <?php endif ?>
                     </form>
                     
                 </div>
