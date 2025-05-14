@@ -3,7 +3,7 @@ Options -MultiViews
 
 RewriteEngine On
 
-RewriteBase /1project/app
+RewriteBase /1project/ecomproject/app
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f

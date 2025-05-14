@@ -4,7 +4,7 @@ namespace views;
 
 class LoginPage {
 
-    public function render() {
+    public function render($data="firsttry") {
         ?>
         <!DOCTYPE html>
         <head>
@@ -58,6 +58,9 @@ class LoginPage {
 
             <div class="login-container">
                 <h2>Login</h2>
+                <?php if ($data=="secondtry"){?>
+                    <p>Incorrect 2FA please try again</p>
+                <?php } ?>
                 <form method="POST" action="">
                     <input type="text" name="username" placeholder="Username" required><br>
                     <input type="password" name="password" placeholder="Password" required><br>

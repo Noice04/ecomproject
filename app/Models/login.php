@@ -31,7 +31,7 @@ class Login{
     }
 
     public function login($data) {
-        echo "noice";
+        
         $query = "SELECT * FROM user WHERE username = :username";
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':username',  $data['username']);

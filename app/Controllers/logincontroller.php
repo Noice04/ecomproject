@@ -4,11 +4,13 @@ namespace controllers;
 
 
 
+use OTPHP\TOTP;
 use models\Login;
 use views\LoginPage;
 use views\LoginPage2fa;
 use views\Home;
 
+require 'vendor/autoload.php';
 require(dirname(__DIR__)."/models/login.php");
 require(dirname(__DIR__)."/resources/views/public/loginpage.php");
 require(dirname(__DIR__)."/resources/views/2fa/loginpage2fa.php");
@@ -25,8 +27,8 @@ class LoginController{
         
 
         $login = new Login($data);
-        var_dump($data);
-        /*
+        //var_dump($data);
+        
 
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -37,6 +39,7 @@ class LoginController{
             $datadb = $login->login($data);//gets the db password 
             if(password_verify($data['password'],$datadb[0]['password'])){ 
                 $_SESSION['tempuser_id'] = $datadb[0]['user_id'];
+                $_SESSION['tempusername'] = $datadb[0]['username'];
                 (new LoginPage2fa())->render();
 
             }
@@ -44,17 +47,20 @@ class LoginController{
         else{
             //compare secrets
             $userSecret = $login->getUserSecretbyID($_SESSION['tempuser_id']);
-            unset($_SESSION['tempuser_id']);
-            $totp = TOTP::create($userSecret); // from your database
+            $totp = TOTP::create($userSecret[0]['twofa_secret']); // from your database
             if ($totp->verify($data['secret'])) {
+                $_SESSION['user_id'] = $_SESSION['tempuser_id'];
+                $_SESSION['username'] = $_SESSION['tempusername'];
+                unset($_SESSION['tempuser_id']);
+                unset($_SESSION['tempusername']);
                 header("location:homes");
             } else {
-                echo "❌ Invalid code.";
+                unset($_SESSION['tempuser_id']);
+                (new LoginPage())->render("secondtry");
             }
         }
-        header("location:registers");
     }
-    */
+    
 }
 
 /*
@@ -80,4 +86,3 @@ class LoginController{
     
 }
         */
-}

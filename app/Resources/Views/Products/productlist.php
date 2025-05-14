@@ -24,12 +24,28 @@ class ProductList {
                 const isLoggedIn = <?= !isset($_SESSION['user_id']) ? 'true' : 'false' ?>;
                 
 
-                function addToCart(productId){
+                function addToCart(productId,quantity){
                     if (isLoggedIn) {
-                        window.location.href = "logins";
+                        window.location.href = "logins";//this makes sure my user is loged in before proceding
                         return;
                     }
-                    console.log("noice");
+                    const formData = new FormData();
+                    formData.append('product_id',productId);
+                    formData.append('quantity',1);
+
+                    //gotta add to cart without moving the user from the page so ajax
+                    fetch('carts', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert('Product added to cart!');
+                        // You can also update a cart counter or UI dynamically here
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
                 }
 
             </script>
