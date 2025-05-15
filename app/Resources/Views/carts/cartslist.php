@@ -102,80 +102,96 @@ class CartList {
                 .confirm-btn:hover {
                     background-color: #45a049;
                 }
+                .allbutheaderandfooter{
+                    font-family: Arial, sans-serif;
+                    margin: auto;
+                    min-height: 60vh;
+                    padding: 40px;
+                    justify-content: center;
+                    align-items: center;
+                    display: flex;
+                    flex-direction: column;
+                }
 
             </style>
         </head>
         <body>
-            <div class="container">
-                <h1>Your Shopping Cart</h1>
+            <div class="allbutheaderandfooter" > 
+                <div class="container">
+                    <h1>Your Shopping Cart</h1>
 
-                <?php if (empty($cartData)): ?>
-                    <p>Your cart is empty.</p>
-                <?php else: ?>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Subtotal</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($cartData as $item): 
-                                $subtotal = $item['price'] * $item['quantity'];
-                                $total += $subtotal;
-                            ?>
-                            <tr>
-                                <td style="display: flex; align-items: center; gap: 10px;">
-                                    <img src="<?= htmlspecialchars($item['image_url']) ?>" alt="<?= htmlspecialchars($item['name']) ?>" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
-                                    <span><?= htmlspecialchars($item['name']) ?></span>
-                                </td>
-                                <td>$<?= number_format($item['price'], 2) ?></td>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <form  action="carts" method="POST">
-                                                <input type="hidden" name="item_cart_id" value=<?php echo $item['item_cart_id'] ?> >
-                                                <button <?php if($item['quantity']==1){echo 'disabled';} ?> type="submit" class="plus-and-minusbtn" name="action" value="reduceOne">-</button>
-                                            </form>
+                    <?php if (empty($cartData)): ?>
+                        <p>Your cart is empty.</p>
+                    <?php else: ?>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Subtotal</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($cartData as $item): 
+                                    $subtotal = $item['price'] * $item['quantity'];
+                                    $total += $subtotal;
+                                ?>
+                                <tr>
+                                    <td style="display: flex; align-items: center; gap: 10px;">
+                                        <img src="<?= htmlspecialchars($item['image_url']) ?>" alt="<?= htmlspecialchars($item['name']) ?>" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
+                                        <span><?= htmlspecialchars($item['name']) ?></span>
+                                    </td>
+                                    <td>$<?= number_format($item['price'], 2) ?></td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <form  action="carts" method="POST">
+                                                    <input type="hidden" name="item_cart_id" value=<?php echo $item['item_cart_id'] ?> >
+                                                    <input type="hidden" name="product_id" value=<?php echo $item['product_id'] ?> >
+                                                    <button <?php if($item['quantity']==1){echo 'disabled';} ?> type="submit" class="plus-and-minusbtn" name="action" value="reduceOne">-</button>
+                                                </form>
 
-                                            <?= (int)$item['quantity'] ?>
+                                                <?= (int)$item['quantity'] ?>
 
-                                            <form action="carts" method="POST">
-                                                <input type="hidden" name="item_cart_id" value=<?php echo $item['item_cart_id'] ?> >
-                                                <button type="submit" class="plus-and-minusbtn" name="action" value="increaseOne">+</button>
-                                            </form>
-                                        </tr>
-                                    </table>
-                                    
-                                </td>
-                                <td>$<?= number_format($subtotal, 2) ?></td>
-                                <td>
-                                    <form method="POST" action="carts">
-                                        <input type="hidden" name="item_cart_id" value=<?php echo $item['item_cart_id'] ?> >
-                                        <button type="submit" class="remove-btn" name="action" value="removeItem">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                            <tr class="total-row">
-                                <td colspan="3">Total</td>
-                                <td colspan="2">$<?= number_format($total, 2) ?></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div style="text-align:center;margin-top:20px;">
-                        <form action="orders" method="POST">
-                            <input type="hidden" name= "total_price" value="<?= number_format($total, 2) ?>">
-                            <button type="submit" name="action" value="confirmOrder" class="confirm-btn">Confirm Order</button>
-                        </form>
-                    </div>
-                <?php endif; ?>
+                                                <form action="carts" method="POST">
+                                                    <input type="hidden" name="item_cart_id" value=<?php echo $item['item_cart_id'] ?> >
+                                                    <input type="hidden" name="product_id" value=<?php echo $item['product_id'] ?> >
+                                                    <button type="submit" class="plus-and-minusbtn" name="action" value="increaseOne">+</button>
+                                                </form>
+                                            </tr>
+                                        </table>
+                                        
+                                    </td>
+                                    <td>$<?= number_format($subtotal, 2) ?></td>
+                                    <td>
+                                        <form method="POST" action="carts">
+                                            <input type="hidden" name="item_cart_id" value=<?php echo $item['item_cart_id'] ?> >
+                                            <input type="hidden" name="product_id" value=<?php echo $item['product_id'] ?> >
+                                            <button type="submit" class="remove-btn" name="action" value="removeItem">Remove</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                                <tr class="total-row">
+                                    <td colspan="3">Total</td>
+                                    <td colspan="2">$<?= number_format($total, 2) ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="text-align:center;margin-top:20px;">
+                            <form action="orders" method="POST">
+                                <input type="hidden" name= "total_price" value="<?= number_format($total, 2) ?>">
+                                <button type="submit" name="action" value="confirmOrder" class="confirm-btn">Confirm Order</button>
+                            </form>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
+            <?php require("Resources\\Views\\Public\\footer.php");?>
         </body>
-         <?php require("Resources\\Views\\Public\\footer.php");?>
+         
         </html>
         <?php
     }

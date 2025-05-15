@@ -12,6 +12,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 
 #DirectoryIndex home.php
 
+ErrorDocument 404 /1project/ecomproject/app/errors/404.php
+
 # QSA is a flag for Apache to keep the query string that is part of the original URL  before the rewrite
 # the L flag tells Apache to stop at the current rule and not apply the next rewrite rules
 RewriteRule ^(.+) index.php?url=$1 [QSA,L]

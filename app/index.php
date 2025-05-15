@@ -16,7 +16,14 @@ class App{
         }*/
 
         spl_autoload_register(function ($class) {
-            require($class.'.php');
+            $path = $class . '.php';
+    
+            if (file_exists($path)) {
+                require $path;
+            } else {
+                http_response_code(404);
+                exit;
+            }
         });
    
         $requestBuilderClass = "\\core\\http\\RequestBuilder";
@@ -98,10 +105,10 @@ class App{
 
                 // If we used return in the view then we can echo the data here
                 //echo $data;
-            }else{
+            }/*else{
                 echo "<br>";
                 echo "The requested resource is not found.";
-            }
+            }*/
 
         }
 

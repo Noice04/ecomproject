@@ -9,6 +9,7 @@
             color: white;
             padding: 40px 0;
             margin-top: 60px;
+            
         }
         .footer-container {
             max-width: 1200px;
