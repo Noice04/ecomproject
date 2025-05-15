@@ -23,7 +23,7 @@ class Login{
     }
 
     public function getUserSecretbyID($userId){
-        $query = "SELECT twofa_secret FROM user WHERE user_id = :userid";
+        $query = "SELECT * FROM user WHERE user_id = :userid";
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':userid',  $userId);
         $stmt->execute();

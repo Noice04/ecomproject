@@ -167,7 +167,8 @@ class CartList {
                         </tbody>
                     </table>
                     <div style="text-align:center;margin-top:20px;">
-                        <form action="carts" method="POST">
+                        <form action="orders" method="POST">
+                            <input type="hidden" name= "total_price" value="<?= number_format($total, 2) ?>">
                             <button type="submit" name="action" value="confirmOrder" class="confirm-btn">Confirm Order</button>
                         </form>
                     </div>

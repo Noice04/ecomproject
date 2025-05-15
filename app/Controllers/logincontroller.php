@@ -33,7 +33,7 @@ class LoginController{
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        if(isset($data['action'])){
+        if(isset($data['action'])){// this is here to logout the user when he wants
             if($data['action']=='logout'){
                 session_unset();
                 header("location:homes");
@@ -42,7 +42,7 @@ class LoginController{
 
 //this checks if the user inputed the correct password
         if (!isset($data['secret'])){
-            $datadb = $login->login($data);//gets the db password 
+            $datadb = $login->login($data);//gets the db row associated with the 
             if(password_verify($data['password'],$datadb[0]['password'])){ 
                 $_SESSION['tempuser_id'] = $datadb[0]['user_id'];
                 $_SESSION['tempusername'] = $datadb[0]['username'];
@@ -52,11 +52,14 @@ class LoginController{
         }
         else{
             //compare secrets
-            $userSecret = $login->getUserSecretbyID($_SESSION['tempuser_id']);
-            $totp = TOTP::create($userSecret[0]['twofa_secret']); // from your database
+            $userdb = $login->getUserSecretbyID($_SESSION['tempuser_id']);
+            $totp = TOTP::create($userdb[0]['twofa_secret']); // from your database
             if ($totp->verify($data['secret'])) {
                 $_SESSION['user_id'] = $_SESSION['tempuser_id'];
                 $_SESSION['username'] = $_SESSION['tempusername'];
+                if($userdb[0]['is_admin']==1){
+                    $_SESSION['is_admin'] = true;
+                }
                 unset($_SESSION['tempuser_id']);
                 unset($_SESSION['tempusername']);
                 header("location:homes");

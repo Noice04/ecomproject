@@ -2,39 +2,49 @@
 
     namespace controllers;
 
+    use models\Order;
     use models\Cart;
-    use models\Product;
-    use views\CartList;
+    use views\OrderList;
 
     require(dirname(__DIR__)."/models/cart.php");
-    require(dirname(__DIR__)."/models/product.php");
-    require(dirname(__DIR__)."/resources/views/carts/cartslist.php");
+    require(dirname(__DIR__)."/models/order.php");
+    require(dirname(__DIR__)."/resources/views/orders/orderlist.php");
 
-    class CartController{
+    class OrderController{
 
-        private Product $product;
+        private Order $order;
         private Cart $cart;
 
         public function read(){
             
 
-            $cart = new Cart();
+            $order = new Order();
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
             }
-            $data = $cart->getCartItems($_SESSION['user_id']);
-            (new CartList())->render($data); 
+            $data = $order->getOrdersByUser($_SESSION['user_id']);
+            (new OrderList())->render($data); 
 
         }
+
+
         public function create($data){
             
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
             }
+            $order = new Order();
             $cart = new Cart();
             switch ($data['action']){
-                case "addToCart":
-                    $cart->addToCart($_SESSION['user_id'],$data['product_id'],$data['quantity']);
+                case "confirmOrder":
+                    $orderID = $order->createOrder($_SESSION['user_id'],$data['total_price']);
+                    //gotta add all cart items to the order_item table
+                    $cartItems = $cart->getCartItems($_SESSION['user_id']);
+                    foreach($cartItems as $item){
+                        $order->addOrderItem($orderID, $item['product_id'], $item['quantity'], $item['price']);
+                    }
+                    $cart->clearCart($_SESSION['user_id']);
+                    $this->read();
                     break;
                 case "increaseOne":
                     $cart->updateQuantity($data['item_cart_id'],1);

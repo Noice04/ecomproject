@@ -108,6 +108,13 @@
                     <?php else: ?>
                         
                         <nav class="logout">
+                            <?php if(isset($_SESSION['is_admin'])): ?>
+                                <?php if($_SESSION['is_admin']==true):?>
+                                <form action="admins" method="POST">
+                                    <button type="submit" class="button-link" name="action" value="homes">Admin Page</button>
+                                </form>
+                                <?php endif ?>
+                            <?php endif?>
                             <div class="logout-content">
                                 <form action="logins" method="POST">
                                     <p style="margin: 5px 0;">Hello <?php echo $_SESSION['username'] ?></p>
