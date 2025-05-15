@@ -97,7 +97,7 @@ class Order {
     }
 
     public function getOrdersByUser($user_id) {
-        $query = "SELECT * FROM `order` WHERE user_id = :user_id";
+        $query = "SELECT * FROM `order` WHERE user_id = :user_id ORDER BY order_id DESC";
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();

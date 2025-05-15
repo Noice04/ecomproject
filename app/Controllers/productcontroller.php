@@ -27,7 +27,7 @@
             $product = new Product();
             $proddata = $product->readByCategory($data['selectedcategory']);
             $category = $product->getCategoryName($data['selectedcategory']);
-            (new ProductListCategory())->render($proddata,$category[0]['name']); 
+            (new ProductListCategory())->render($proddata,$category[0]['name'],$data['page'] ?? 0); 
         }
 
 

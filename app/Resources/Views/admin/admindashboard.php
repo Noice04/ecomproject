@@ -140,7 +140,7 @@ class AdminDashboard {
                                 </form>
                                 <form action="admins" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
                                     <input type="hidden" name="user_id" value="<?= htmlspecialchars($user['user_id']) ?>">
-                                    <button type="submit" class="btn-delete">Delete</button>
+                                    <button type="submit" class="btn-delete"name="action" value="delete">Delete</button>
                                 </form>
                             </div>
                         </div>
@@ -150,6 +150,7 @@ class AdminDashboard {
                 <?php endif; ?>
             </div>
         </body>
+         <?php require("Resources\\Views\\Public\\footer.php");?>
         </html>
         <?php
     }

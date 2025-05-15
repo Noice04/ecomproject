@@ -4,13 +4,15 @@ namespace views;
 
 class ProductListCategory {
 
-    public function render($data, $categoryName) {
+    public function render($products, $categoryName,$page =0) {
 
         require("Resources\\Views\\Public\\header.php");
         ?>
         <!DOCTYPE html>
         <html>
+             
         <head>
+            
             <title><?= htmlspecialchars($categoryName) ?> Products</title>
             <style>
                 body {
@@ -39,10 +41,12 @@ class ProductListCategory {
                 }
 
                 .product-grid {
-                    display: flex;
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
                     flex-wrap: wrap;
                     gap: 20px;
                     justify-content: flex-start;
+                    
                 }
 
                 .product {
@@ -85,8 +89,14 @@ class ProductListCategory {
                 }
 
                 .pagination {
-                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 5px; 
                     margin-top: 20px;
+                }
+                .pagination form {
+                    display: inline; 
                 }
 
                 .pagination button {
@@ -130,43 +140,29 @@ class ProductListCategory {
             <script>
                 const isLoggedIn = <?= !isset($_SESSION['user_id']) ? 'true' : 'false' ?>;
 
-                function addToCart(productId){
+                function addToCart(productId,quantity){
                     if (isLoggedIn) {
-                        window.location.href = "logins";
+                        window.location.href = "logins";//this makes sure my user is loged in before proceding
                         return;
                     }
-                    console.log("Added to cart:", productId);
-                }
+                    const formData = new FormData();
+                    formData.append('product_id',productId);
+                    formData.append('quantity',1);
+                    formData.append('action',"addToCart");
 
-                let currentPage = 0;
-                const productsPerPage = 15;
-                let products = [];
-
-                function renderProducts() {
-                    const grid = document.getElementById('product-grid');
-                    grid.innerHTML = '';
-
-                    const start = currentPage * productsPerPage;
-                    const end = start + productsPerPage;
-                    const pageProducts = products.slice(start, end);
-
-                    pageProducts.forEach(product => {
-                        const productHTML = `
-                        <div class="product">
-                            <img src="${product.image_url}" alt="Image" />
-                            <div class="product-description">
-                                <h3>${product.name}</h3>
-                                <p>${product.description}</p>
-                                <strong>$${parseFloat(product.price).toFixed(2)}</strong><br>
-                                <button class="add-to-cart" onclick="addToCart('${product.product_id}')">Add To Cart</button>
-                            </div>
-                        </div>`;
-                        grid.innerHTML += productHTML;
+                    //gotta add to cart without moving the user from the page so ajax for behind the scenes is perfect
+                    fetch('carts', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert('Product added to cart!');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
                     });
-
-                    document.getElementById('page-number').innerText = currentPage + 1;
                 }
-
                 function nextPage() {
                     if ((currentPage + 1) * productsPerPage < products.length) {
                         currentPage++;
@@ -180,15 +176,15 @@ class ProductListCategory {
                         renderProducts();
                     }
                 }
-
-                // PHP passes product data as JSON
-                window.onload = function () {
-                    products = <?= json_encode($data) ?>;
-                    renderProducts();
-                };
             </script>
         </head>
-
+        <?php
+            $currentPage = $page;
+            $productsPerPage = 15;
+            $totalProducts = count($products);
+            $start = $currentPage * $productsPerPage;
+            $pageProducts = array_slice($products, $start, $productsPerPage);
+        ?>
         <body>
             <div class="left-fixed-panel">
                 <form action="" method="POST">
@@ -206,17 +202,49 @@ class ProductListCategory {
                 <div class="title" style="padding-top: 60px;">
                     <h1>Our <?= htmlspecialchars($categoryName) ?> Products</h1>
                 </div>
-                <div class="product-grid" id="product-grid">
-                    <!-- js fills this -->
+                <div class="product-grid">
+                    <?php foreach ($pageProducts as $product): ?>
+                        <div class="product">
+                            <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="Image" />
+                            <div class="product-description">
+                                <h3><?= htmlspecialchars($product['name']) ?></h3>
+                                <p><?= htmlspecialchars($product['description']) ?></p>
+                                <strong>$<?= number_format((float)$product['price'], 2) ?></strong><br>
+                                <button class="add-to-cart" onclick="addToCart('<?= $product['product_id'] ?>', 1)">Add To Cart</button>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
 
+                
+
                 <div class="pagination">
-                    <button onclick="prevPage()">Previous</button>
-                    <span id="page-number">1</span>
-                    <button onclick="nextPage()">Next</button>
+                    <?php if ($currentPage > 0): ?>
+                        <form action="products"method="POST">
+                            <input type="hidden"name="selectedcategory"value=<?=$products[0]['category_id']?>>
+                            
+                            <button type="submit" name="page"value=<?=$currentPage-1?>>Previous</button>
+                        
+                        </form>
+                        
+                    <?php endif; ?>
+
+                    <span id="page-number"><?= $currentPage + 1 ?></span>
+
+                    <?php if (($currentPage + 1) * $productsPerPage < $totalProducts): ?>
+                        <form action="products"method="POST">
+                            <input type="hidden"name="selectedcategory"value=<?=$products[0]['category_id']?>>
+                            
+                            <button type="submit" name="page"value=<?=$currentPage+1?>>Next</button>
+                        
+                        </form>
+                        
+                    <?php endif; ?>
                 </div>
+
             </div>
         </body>
+         <?php require("Resources\\Views\\Public\\footer.php");?>
         </html>
         <?php
     }

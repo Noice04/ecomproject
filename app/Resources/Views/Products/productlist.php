@@ -270,7 +270,7 @@ class ProductList {
             </div>
         </body>
 
-
+ <?php require("Resources\\Views\\Public\\footer.php");?>
         </html>
         <?php
     }

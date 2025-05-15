@@ -237,8 +237,8 @@ class Homepage {
                     
                     <div class="weeklydeals">
                         <div style="display:flex;justify-content: space-between;align-items: center;">
-                            <h2>Weekly Deals</h2>
-                            <a href="deals">View All</a>
+                            <h2>Popular Products</h2>
+                            <a href="products">View All</a>
                         </div>
                         
 

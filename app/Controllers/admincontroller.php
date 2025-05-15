@@ -41,7 +41,7 @@ class AdminController {
         }
 
         switch ($data['action']) {
-            case "deleteUser":
+            case "delete":
                 $this->admin->deleteUserById($data['user_id']);
                 break;
             case "promote":
@@ -50,6 +50,9 @@ class AdminController {
                 break;
             case "demote":
                 $this->admin->demoteUserFromAdmin($data['user_id']);
+                if($data['user_id']==$_SESSION['user_id']){
+                    $_SESSION['is_admin']=0;
+                }
                 
                 break;
             case "viewLogs":
