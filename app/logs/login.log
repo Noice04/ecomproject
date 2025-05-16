@@ -37,3 +37,5 @@
 [2025-05-16T06:11:24.152136+02:00] login.INFO: User 13 has correct credentials [] []
 [2025-05-16T06:11:45.283338+02:00] login.INFO: User 13 has successfully loged in [] []
 [2025-05-16T06:13:38.953141+02:00] login.INFO: User 13 loged out of their account [] []
+[2025-05-16T19:20:51.955880+02:00] login.INFO: User 13 has correct credentials [] []
+[2025-05-16T19:21:23.592760+02:00] login.INFO: User 13 has successfully loged in [] []

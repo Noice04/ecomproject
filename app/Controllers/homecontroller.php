@@ -18,7 +18,7 @@
 
         public function read(){
             $product = new Product();
-            $products = $product->get8Products();
+            $products = $product->get6Products();
 
             $categories = $product->getCategories();
             

@@ -1,0 +1,5 @@
+msgid "About Us"
+msgstr "About Us"
+
+msgid "Welcome to ShopFresh!"
+msgstr "Welcome to ShopFresh!"

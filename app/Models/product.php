@@ -97,8 +97,8 @@ class Product{
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function get8products() {
-        $query = "SELECT * FROM products LIMIT 8";
+    public function get6products() {
+        $query = "SELECT * FROM products LIMIT 6";
         $stmt = $this->dbConnection->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);

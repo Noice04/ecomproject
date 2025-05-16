@@ -6,3 +6,8 @@
 [2025-05-16T02:45:34.239689+02:00] order.INFO: User 13 has cleared his cart of all items and created an order [] []
 [2025-05-16T02:48:08.305493+02:00] order.INFO: User 13 added 4to his order 20 [] []
 [2025-05-16T02:48:08.309496+02:00] order.INFO: User 13 has cleared his cart of all items and created an order [] []
+[2025-05-16T19:22:56.243620+02:00] order.INFO: User 13 added 19to his order 21 [] []
+[2025-05-16T19:22:56.246177+02:00] order.INFO: User 13 added 16to his order 21 [] []
+[2025-05-16T19:22:56.247643+02:00] order.INFO: User 13 added 13to his order 21 [] []
+[2025-05-16T19:22:56.248960+02:00] order.INFO: User 13 added 14to his order 21 [] []
+[2025-05-16T19:22:56.250190+02:00] order.INFO: User 13 has cleared his cart of all items and created an order [] []
