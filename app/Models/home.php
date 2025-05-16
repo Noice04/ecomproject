@@ -24,7 +24,7 @@ class Home{
 
       
 
-    // CRUD
+    
     public function getProducts() {
         $query = "SELECT * FROM products";
         $stmt = $this->dbConnection->prepare($query);
@@ -54,24 +54,7 @@ class Home{
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_CLASS, User::class);
     }
-    //delete a single user using id
-    public function deleteUser(){
-        $query = "DELETE user WHERE user_id = :userID";
-        $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':userID', $this->id);
-        $stmt->execute();
-        return true;
-    }
-    //edits the user taking in any column and new value
-    public function editUser($column,$newvalue){
-        $query = "UPDATE user SET :column = :newvalue";
-        $stmt = $this->dbConnection->prepare($query);
-        //must implement a check for the values
-        $stmt->bindParam(':column', $column);
-        $stmt->bindParam(':newvalue', $newvalue);
-        $stmt->execute();
-        return $stmt->fetchAll(\PDO::FETCH_CLASS, User::class);
-    }
+    
 
     
 }

@@ -16,7 +16,7 @@ class RegisterPageSuccess {
         }
 
         $secret = $_SESSION['new_2fa_secret'];
-        $userid = $_SESSION['user_id'];
+        $userid = $_SESSION['temp_user_id'];
 
         $totp = TOTP::create($secret);
         $totp->setLabel($userid);

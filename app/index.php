@@ -16,14 +16,9 @@ class App{
         }*/
 
         spl_autoload_register(function ($class) {
-            $path = $class . '.php';
+            require $class . '.php';
     
-            if (file_exists($path)) {
-                require $path;
-            } else {
-                http_response_code(404);
-                exit;
-            }
+            
         });
    
         $requestBuilderClass = "\\core\\http\\RequestBuilder";

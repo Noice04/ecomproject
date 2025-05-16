@@ -39,27 +39,7 @@ class Login{
         $datadb = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $datadb;
     }
-        //if(!empty($datadb)){
-
-          
-            /*
-            //cant get the password_verify to work for some reason
-        if(password_verify($data['password'],$datadb[0]['password'])){
-            session_start();
-            $_SESSION['user_id'] = $datadb[0]['user_id'];
-            $_SESSION['username'] = $datadb[0]['username'];
-
-
-            return $datadb[0];
-        }
-        else{
-           
-
-            return false;
-        }*/
-    //}
-
-    //return false;
+       
 
 
     

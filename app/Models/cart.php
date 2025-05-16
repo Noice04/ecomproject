@@ -55,11 +55,7 @@ class Cart {
     }
 
     // CRUD operations
-
-    public function read(){
-        
-    }
-
+    
     public function addToCart($user_id,$product_id,$quantity) {
         $item_cart_id = $this->cartItemExist($user_id,$product_id);
         if ($item_cart_id!=-1){//if the item does already exist then we will add +1 to the quantity

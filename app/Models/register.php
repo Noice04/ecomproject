@@ -29,9 +29,9 @@ class Register {
         $this->password = $data['password'];
         
         // Check if user already exists
-        $query = "SELECT * FROM user WHERE email = :email";
+        $query = "SELECT * FROM user WHERE username = :username";
         $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':username', $this->username);
         $stmt->execute();
         $existingUser = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -59,12 +59,13 @@ class Register {
 
         if ($success) {
             session_start();
-            $_SESSION['user_id']= $this->dbConnection->lastInsertId();
-            $_SESSION['username']= $this->username;
+            $_SESSION['temp_user_id']= $this->dbConnection->lastInsertId();
+            $_SESSION['temp_username']= $this->username;
             $_SESSION['new_2fa_secret'] = $twofaSecret;
             return [
-                'user_id' => $this->dbConnection->lastInsertId(),
-                'username' => $this->username
+                'temp_user_id' => $this->dbConnection->lastInsertId(),
+                'temp_username' => $this->username
+                
             ];
         }
 

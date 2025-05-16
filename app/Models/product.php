@@ -34,7 +34,7 @@ class Product{
         $this->id = $id;
     }  
     public function getImageUrl() {
-        return $this->$image_url;
+        return $this->image_url;
     }
 
     public function setImageUrl($image_url) {
@@ -137,41 +137,7 @@ class Product{
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_CLASS, User::class);
     }
-    //delete a single user using id
-    public function deleteUser(){
-        $query = "DELETE user WHERE user_id = :userID";
-        $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':userID', $this->id);
-        $stmt->execute();
-        return true;
-    }
-    //edits the user taking in any column and new value
-    public function editUser($column,$newvalue,$userId){
-        $query = "UPDATE user SET :column = :newvalue WHERE user_id = :userID";
-        $stmt = $this->dbConnection->prepare($query);
-        //must implement a check for the values
-        $stmt->bindParam(':column', $column);
-        $stmt->bindParam(':newvalue', $newvalue);
-        $stmt->bindParam(':userID', $userId);
-        $stmt->execute();
-        return $stmt->fetchAll(\PDO::FETCH_CLASS, User::class);
-    }
-
-    //create user
-
-    public function createUser($username,$email,$password,$address,$role){
-        $passwordhashed = password_hash($password);
-        $query = "INSERT INTO user VALUES(:username, :email , :passwordhashed, :address, :role)";
-        $stmt = $this->dbConnection->prepare($query);
-        //must implement a check for the values
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':passwordhashed', $passwordhashed);
-        $stmt->bindParam(':address', $address);
-        $stmt->bindParam(':role', $role);
-        $stmt->execute();
-        return $stmt->fetchAll(\PDO::FETCH_CLASS, User::class);
-    } 
+    
 
     
 }

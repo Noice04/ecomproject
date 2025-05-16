@@ -9,6 +9,9 @@ use models\Login;
 use views\LoginPage;
 use views\LoginPage2fa;
 use views\Home;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
 
 require 'vendor/autoload.php';
 require(dirname(__DIR__)."/models/login.php");
@@ -18,9 +21,14 @@ require(dirname(__DIR__)."/resources/views/2fa/loginpage2fa.php");
 class LoginController{
 
     private Login $login;
+    private Logger $logger;
 
+        public function __construct() {
+        $this->logger = new Logger('login');
+        $this->logger->pushHandler(new StreamHandler(__DIR__ . '/../logs/login.log', Logger::INFO));
+        }
     public function read(){  
-
+        
         (new LoginPage())->render(); 
     }
     public function create($data){
@@ -35,6 +43,7 @@ class LoginController{
         }
         if(isset($data['action'])){// this is here to logout the user when he wants
             if($data['action']=='logout'){
+                $this->logger->info("User ".$_SESSION['user_id']." loged out of their account");
                 session_unset();
                 header("location:homes");
             }
@@ -43,11 +52,19 @@ class LoginController{
 //this checks if the user inputed the correct password
         if (!isset($data['secret'])){
             $datadb = $login->login($data);//gets the db row associated with the 
-            if(password_verify($data['password'],$datadb[0]['password'])){ 
-                $_SESSION['tempuser_id'] = $datadb[0]['user_id'];
-                $_SESSION['tempusername'] = $datadb[0]['username'];
-                (new LoginPage2fa())->render();
-
+            if(!empty($datadb)){
+                if(password_verify($data['password'],$datadb[0]['password'])){ 
+                    $_SESSION['tempuser_id'] = $datadb[0]['user_id'];
+                    $_SESSION['tempusername'] = $datadb[0]['username'];
+                    $this->logger->info("User ".$datadb[0]['user_id']." has correct credentials");
+                    (new LoginPage2fa())->render();
+                }
+                else{
+                    (new LoginPage())->render("secondtry");
+                }
+            }
+            else{
+                (new LoginPage())->render("secondtry");
             }
         }
         else{
@@ -57,6 +74,7 @@ class LoginController{
             if ($totp->verify($data['secret'])) {
                 $_SESSION['user_id'] = $_SESSION['tempuser_id'];
                 $_SESSION['username'] = $_SESSION['tempusername'];
+                $this->logger->info("User ".$_SESSION['user_id']." has successfully loged in");
                 if($userdb[0]['is_admin']==1){
                     $_SESSION['is_admin'] = true;
                 }
@@ -64,6 +82,7 @@ class LoginController{
                 unset($_SESSION['tempusername']);
                 header("location:homes");
             } else {
+                $this->logger->info("User ".$_SESSION['tempuser_id']." has failed to log in due to 2fa");
                 unset($_SESSION['tempuser_id']);
                 (new LoginPage())->render("secondtry");
             }
