@@ -2,16 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Footer</title>
     <style>
         footer {
             background-color: #146c2b;
             color: white;
             padding: 40px 0;
             margin-top: 60px;
+            width: 100%;
             
         }
         .footer-container {
+            background-color: #146c2b;
+            width: 90%;
             max-width: 1200px;
             margin: auto;
             display: flex;

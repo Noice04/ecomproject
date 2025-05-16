@@ -17,9 +17,7 @@ class CartList {
         ?>
         <!DOCTYPE html>
         <html>
-            <script>
-                
-            </script>
+            
         <head>
             
 
@@ -35,7 +33,8 @@ class CartList {
 
                 .container {
                     margin-top:200px;
-                    width: 80%;
+                    height:90%;
+                    width: 90%;
                     margin: 50px auto;
                     background: white;
                     padding: 20px;

@@ -13,7 +13,8 @@ class AdminDashboard {
         }
         if(!$_SESSION['is_admin']){//checks if is_admin is set to true or it boots you to home
                 header("location:homes");
-            }
+        }
+
         require("Resources\\Views\\Public\\header.php");
         ?>
         <!DOCTYPE html>

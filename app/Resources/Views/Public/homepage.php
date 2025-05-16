@@ -15,16 +15,35 @@ class Homepage {
         <!DOCTYPE html>
         <html>
         <head>
+            <title>Home</title>
             <?php //non necessary currently?>
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
             <script>
                 const isLoggedIn = <?= !isset($_SESSION['user_id']) ? 'true' : 'false' ?>;
-                function addToCart(productId){
+                
+
+                function addToCart(productId,quantity){
                     if (isLoggedIn) {
-                        window.location.href = "logins";
+                        window.location.href = "logins";//this makes sure my user is loged in before proceding
                         return;
                     }
-                    console.log("noice");
+                    const formData = new FormData();
+                    formData.append('product_id',productId);
+                    formData.append('quantity',1);
+                    formData.append('action',"addToCart");
+
+                    //gotta add to cart without moving the user from the page so ajax for behind the scenes is perfect
+                    fetch('carts', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert('Product added to cart!');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
                 }
 
             </script>
@@ -260,7 +279,7 @@ class Homepage {
                                                 <br>
                                                 <span>$<?= number_format($product['price'], 2) ?></span>
                                                 <br>
-                                                <button class="add-to-cart" onclick="addToCart('${product.product_id}')">Add To Cart</button>
+                                                <button class="add-to-cart" onclick="addToCart('<?php echo $product['product_id']?>')">Add To Cart</button>
                                             </div>
                                         
                                         </div>

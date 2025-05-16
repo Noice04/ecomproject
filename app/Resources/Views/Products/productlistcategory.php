@@ -4,7 +4,7 @@ namespace views;
 
 class ProductListCategory {
 
-    public function render($products, $categoryName,$page =0) {
+    public function render($products, $categoryName,$page =0, $categories,) {
 
         require("Resources\\Views\\Public\\header.php");
         ?>
@@ -186,22 +186,41 @@ class ProductListCategory {
             $pageProducts = array_slice($products, $start, $productsPerPage);
         ?>
         <body>
+            
             <div class="left-fixed-panel">
                 <form action="" method="POST">
-                    <button type="submit" name="selectedcategory" value="1">Dairy</button><br>
-                    <button type="submit" name="selectedcategory" value="2">Baked Goods</button><br>
-                    <button type="submit" name="selectedcategory" value="3">Fruits</button><br>
-                    <button type="submit" name="selectedcategory" value="4">Meats</button><br>
+                    <?php if (!empty($categories)): ?>
+                        <?php foreach($categories as $category):?>
+                            <button type="submit"name="selectedcategory"  value=<?php echo $category['category_id']; ?>><?php echo $category['name']; ?></button>
+                            <br>
+                        <?php endforeach ?>
+                    <?php endif ?>
                 </form>
                 <form action="" method="GET">
                     <button type="submit">All Products</button>
                 </form>
+                
             </div>
 
             <div class="container">
                 <div class="title" style="padding-top: 60px;">
                     <h1>Our <?= htmlspecialchars($categoryName) ?> Products</h1>
                 </div>
+                <form method="GET" action="" style="margin-bottom: 20px;">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        placeholder="Search for a product..." 
+                        value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>" 
+                        style="width: 300px; padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;"
+                    />
+                    <button 
+                        type="submit" 
+                        style="padding: 10px 20px; font-size: 16px; background-color: #157347; color: white; border: none; border-radius: 5px; cursor: pointer;"
+                    >
+                        Search
+                    </button>
+                </form>
                 <div class="product-grid">
                     <?php foreach ($pageProducts as $product): ?>
                         <div class="product">

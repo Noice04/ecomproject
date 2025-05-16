@@ -50,8 +50,13 @@ class ProductList {
 
             </script>
         <head>
-            <title>Here are our products</title>
+            <title>Products</title>
             <style>
+                html, body {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }
                 body {
                     font-family: Arial, sans-serif;
                     margin: 0;
@@ -66,6 +71,7 @@ class ProductList {
 
                 .container {
                     width: 90%;
+                    height:90%;
                     margin: 20px auto;
                     padding-left:250px;
                 }
@@ -201,76 +207,119 @@ class ProductList {
                     border-color: #145c37;
                     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
                 }
+                .allbutheaderandfooter{
+                    font-family: Arial, sans-serif;
+                    margin: auto;
+                    min-height: 60vh;
+                    padding: 40px;
+                    justify-content: center;
+                    align-items: center;
+                    display: flex;
+                    flex-direction: column;
+                }
 
 
 
             </style>
         </head>
         <body>
-            <div class="container">
-                <h1>Here are our products</h1>
-                <div class="left-fixed-panel">
-                    <form action="" method="POST">
-                        <?php if (!empty($data)): ?>
-                            <?php foreach($categories as $category):?>
-                                <button type="submit"name="selectedcategory"  value=<?php echo $category['category_id']; ?>><?php echo $category['name']; ?></button>
-                                <br>
-                            <?php endforeach ?>
-                        <?php endif ?>
+            <div class="allbutheaderandfooter" > 
+                <div class="container">
+                    <h1>Here are our products</h1>
+
+                    <form method="GET" action="" style="margin-bottom: 20px;">
+                        <input 
+                            type="text" 
+                            name="search" 
+                            placeholder="Search for a product..." 
+                            value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>" 
+                            style="width: 300px; padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;"
+                        />
+                        <button 
+                            type="submit" 
+                            style="padding: 10px 20px; font-size: 16px; background-color: #157347; color: white; border: none; border-radius: 5px; cursor: pointer;"
+                        >
+                            Search
+                        </button>
                     </form>
+
                     
-                </div>
 
-                <?php if (!empty($data)): ?>
-                    <?php foreach($categories as $category):?>
-                         
+                    <div class="left-fixed-panel">
+                        <form action="" method="POST">
+                            <?php if (!empty($data)): ?>
+                                <?php foreach($categories as $category):?>
+                                    <button type="submit"name="selectedcategory"  value=<?php echo $category['category_id']; ?>><?php echo $category['name']; ?></button>
+                                    <br>
+                                <?php endforeach ?>
+                            <?php endif ?>
+                        </form>
                         
-                        <div style="display:flex;justify-content: space-between;align-items: center;">
-                            <h2><?php echo $category['name']?> products</h2>
-                        </div>
-                        <div class="scroll-container">
-                            <div class="scroll-row" id=<?php echo $category['name']."row"?>>
-                            <button class="arrow left-arrow" onclick="scrollRowLeft(500,'<?php echo $category['name'].'row' ?>')">←</button>    
-                                <?php
-                                    foreach($data as $product){
-                                        if($product['category_id'] == $category['category_id']){
-                                            ?>
-                                            <div class="scroll-item">
-                                                <div class="product">
-                                                <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="Image" style="height:50%; width:100%;object-fit: fill;" />
-                                                    <div class="product-description">
-                                                        <h2><?= htmlspecialchars($product['name']) ?></h2>
-                                                            
-                                                        <div class="product_details">
-                                                            <span><?= htmlspecialchars($product['description']) ?></span>
-                                                            <br>
-                                                            <span>$<?= number_format($product['price'], 2) ?></span>
-                                                            <br>
-                                                            <button class="add-to-cart" onclick="addToCart('<?php echo $product['product_id']?>')">Add To Cart</button>
-                                                        </div>
-                                                    
-                                                    </div>
-                                                </div>
-                                            
-                                        </div>
-    <?php
-                                        }
-                                    }
-                                    
-                                ?>
-                            <button class="arrow right-arrow" onclick="scrollRowRight(500,'<?php echo $category['name'].'row' ?>')">→</button>     
+                    </div>
+
+                    <?php if (!empty($data)): ?>
+                        <?php foreach($categories as $category):?>
+                            <?php
+                                
+                                $categoryProducts = array_filter($data, function($product) use ($category) {
+                                    return $product['category_id'] == $category['category_id'];
+                                });
+
+                                if (empty($categoryProducts)) {
+                                    continue;
+                                }
+                            ?>
+                            
+                            
+                            <div style="display:flex;justify-content: space-between;align-items: center;">
+                                <h2><?php echo $category['name']?> products</h2>
                             </div>
-                        </div>
+                            <div class="scroll-container">
+                                <div class="scroll-row" id=<?php echo $category['name']."row"?>>
+                                <button class="arrow left-arrow" onclick="scrollRowLeft(500,'<?php echo $category['name'].'row' ?>')">←</button>    
+                                    <?php
+                                        foreach($categoryProducts  as $product){
+                                            if($product['category_id'] == $category['category_id']){
+                                                ?>
+                                                <div class="scroll-item">
+                                                    <div class="product">
+                                                    <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="Image" style="height:50%; width:100%;object-fit: fill;" />
+                                                        <div class="product-description">
+                                                            <h2><?= htmlspecialchars($product['name']) ?></h2>
+                                                                
+                                                            <div class="product_details">
+                                                                <span><?= htmlspecialchars($product['description']) ?></span>
+                                                                <br>
+                                                                <span>$<?= number_format($product['price'], 2) ?></span>
+                                                                <br>
+                                                                <button class="add-to-cart" onclick="addToCart('<?php echo $product['product_id']?>')">Add To Cart</button>
+                                                            </div>
+                                                        
+                                                        </div>
+                                                    </div>
+                                                
+                                            </div>
+                                        <?php
+                                            }
+                                        }
+                                        
+                                    ?>
+                                <button class="arrow right-arrow" onclick="scrollRowRight(500,'<?php echo $category['name'].'row' ?>')">→</button>     
+                                </div>
+                            </div>
 
-<?php endforeach ?>
-<?php else: ?>
-    <p>No products available in the store.<br>Our sincerest apologies</p>
-<?php endif; ?>
+                    <?php endforeach ?>
+                    <?php else: ?>
+                        <p>No products available in the store.<br>Our sincerest apologies</p>
+                    <?php endif; ?>
 
+                </div>
+                <?php require("Resources\\Views\\Public\\footer.php");?>
             </div>
+            
         </body>
 
- <?php require("Resources\\Views\\Public\\footer.php");?>
+  
         </html>
         <?php
     }

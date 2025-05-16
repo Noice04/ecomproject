@@ -6,6 +6,13 @@ class OrderList {
 
     public function render($data) {
         require("Resources\\Views\\Public\\header.php");
+        if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+        }else if(!isset($_SESSION['user_id'])){
+            header("location:logins");
+        }
+
+        require("Resources\\Views\\Public\\header.php");
         ?>
         <!DOCTYPE html>
         <html>

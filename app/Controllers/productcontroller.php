@@ -25,6 +25,14 @@
             if(session_status()===PHP_SESSION_NONE){
                 session_start();
             }
+            if(isset($_GET['search'])){
+                $product = new Product();
+                $data = $product->search($_GET['search']);
+                $categories = $product->getCategories();
+                (new ProductList())->render($data,$categories); 
+                exit;
+            }
+
             if(isset($_SESSION['user_id']))
             $this->logger->info("User ".$_SESSION['user_id']." opened the products page");
             else{
@@ -38,9 +46,13 @@
 
         }
         public function create($data){
+            if(isset($data['allproducts']))
+                $this->read();
+
             $product = new Product();
             $proddata = $product->readByCategory($data['selectedcategory']);
             $category = $product->getCategoryName($data['selectedcategory']);
+            $categories = $product->getCategories();
             if(session_status()===PHP_SESSION_NONE){
                 session_start();
             }
@@ -49,7 +61,7 @@
             else{
                 $this->logger->info("A guest opened the products page on ".$category[0]['name']." page");
             }
-            (new ProductListCategory())->render($proddata,$category[0]['name'],$data['page'] ?? 0); 
+            (new ProductListCategory())->render($proddata,$category[0]['name'],$data['page'] ?? 0, $categories); 
         }
 
 

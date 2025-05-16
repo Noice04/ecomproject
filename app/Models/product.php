@@ -118,7 +118,15 @@ class Product{
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
-    
+
+    public function search($term) {
+        $query = "SELECT * FROM products WHERE name LIKE :term OR description LIKE :term";
+        $stmt = $this->dbConnection->prepare($query);
+        $searchTerm = '%' . $term . '%';
+        $stmt->bindParam(':term', $searchTerm);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 
     // Read single User by ID
     public function readOne() {

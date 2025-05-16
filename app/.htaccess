@@ -16,5 +16,13 @@ ErrorDocument 404 /1project/ecomproject/app/errors/404.php
 
 # QSA is a flag for Apache to keep the query string that is part of the original URL  before the rewrite
 # the L flag tells Apache to stop at the current rule and not apply the next rewrite rules
+
+
+
+# If the URL matches /products/category/X/page/Y
+#RewriteRule ^products/category/([0-9]+)/page/([0-9]+)$ products.php?category=$1&page=$2 [L,QSA]
+
+
 RewriteRule ^(.+) index.php?url=$1 [QSA,L]
+
 #RewriteRule ^() index.php?url=$1 [QSA,L]
