@@ -88,7 +88,6 @@
                     <a href="homes">Home</a>
                     <a href="products">Products</a>
                     <a href="orders">Orders</a>
-                    <a href="dead/About_Us">About Us</a> <!-- i am using the about us link here to display the custom error pages -->
                 </nav>
 
 
